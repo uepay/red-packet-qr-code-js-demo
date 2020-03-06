@@ -73,7 +73,7 @@
 
 <body>
     <div>
-        <form>
+        <form onsubmit="return false;">
             <div class="moneyWrap">
                 <span class="title">充值金額(Payment amount)</span><br>
                 <input class="input" type="number" name="firstname" placeholder="$請輸入金額" autofocus="autofocus">
@@ -139,7 +139,7 @@
                         alert('放弃支付');
                     }
                 });
-                // 获取预支付参数
+                // 获取唤醒支付参数，jssdk唤起参数说明请参考极易付接口文档
                 let params = {
                     "type": "JSAPI",
                     "amt": '1',
@@ -148,7 +148,7 @@
                 }
                 ajax({
                     method: 'POST',
-                    url: 'https://demo.uepay.mo/wallet/online/test/preorder.do',
+                    url: 'https://XXXX',     // 获取 唤起参数接口
                     data: params,
                     success: function (data) {
                         var req = {
