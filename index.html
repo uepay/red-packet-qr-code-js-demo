@@ -1,0 +1,53 @@
+<!-- 調用 uepay wallet sdk 支付案例，環境：js，更多函數使用方法請參考 README.md 文獻說明。-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>UEPAY支付</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="./uepay_jssdk.js"></script> <!-- 引入uepay wallet sdk -->
+    <script type="text/javascript">
+
+        function onBridgeReady() {
+            const isUePay = window.UePayJsApi.isUePayApp();    // 判斷是否為uepay內核，true：表示是；false：表示否
+
+            if (isUePay) {
+                var paySdk = window.UePayJsApi.build(function (res) {      // 支付初始化
+                    // 支付成功回調函數
+                    var obj = JSON.parse(res);
+                    if (obj.ret_code === '00') {      // '00' 表示成功
+                        alert('成功');
+                    }
+                    if (obj.ret_code === '01') {      // '01' 表示失敗
+                        alert('失败');
+                    }
+                    if (obj.ret_code === '02') {     // '02' 表示放棄支付
+                        alert('放弃支付');
+                    }
+                });
+                var param = {      // 預支付參數
+                    "appId": "000030053310001",
+                    "timeStamp": 1581992793,
+                    "nonceStr": "43229cfd7e9c2b2f16a6f942da4b1e16",
+                    "prepayid": "UEPAY2020021810500882940194",
+                    "signType": "MD5",
+                    "paySign": "EC1DEEB32CAEE9AC3AAB9789E249D9EA"
+                };
+                paySdk.payment(param);      // 支付
+            } else {
+                alert("抱歉，请使用UePay打开");
+
+            }
+
+        }
+        onBridgeReady();
+
+    </script>
+
+    <div>测试</div>
+</body>
+
+</html>
