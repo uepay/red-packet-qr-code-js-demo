@@ -1,5 +1,5 @@
 # red-packet-qr-code-js-demo
-#### 正掃支付聚合案例
+##### Uepay钱支付案例
 ##### 开发环境：HTML + JS
 ##### uepa钱包SDK：uepay_jssdk.js
 
@@ -12,7 +12,7 @@
 2、进入H5页面，点击“在线支付”按钮。
 
 分别执行以下命令
-1. `git clone https://github.com/Jamin-Deng/uepay-wallet-sdk-js-demo.git`
+1. `git clone https://github.com/uepay/red-packet-qr-code-js-demo.git`
 
 ## 文件目录结构
 ```
@@ -56,3 +56,4 @@ build里面参数为支付结果回调函数，支付成功res返回{'ret_code':
 
 req为支付信息参数对象，结果为appId（分配给商户的）、timeStamp（时间戳）、nonceStr（由服务器生产的随机串，用于验证前后端交互的一致性）、prepayid（预支付订单的传递订单号）、signType（签名散列算法，现在固定为'MD5'）、paySign（验签参数）
 
+ 
