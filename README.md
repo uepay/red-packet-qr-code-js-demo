@@ -51,9 +51,21 @@ const isUePay = UePay.onReady();
  ```
 var paySdk = UePay.build(function(res) {});
 paySdk.payment(req);
+paySdk.getCurrentLocation(req);   獲取當前地址， req默認為{type: 'wgs84'}
+paySdk.sendShareReq(req);         用於喚醒原生APP的分享功能，目前包括：微信對話和微信朋友圈 
+paySdk.closeWindow(req);          關閉內置瀏覽器窗口
+paySdk.openAction(req);           打開APP的綁卡頁面
+paySdk.openLocation(req);         打開地圖
+paySdk.scanCode(req);             (必填)默认为0，扫描结果由UePay处理，当needResult 为 1 时，扫码返回的结果
+paySdk.hideTitleBar(req);         隱藏UePay內置瀏覽器標題欄
+paySdk.showTitleBar(req);         顯示標題欄
+paySdk.setStatusBar(req);         設置UePay內置瀏覽器頁面 狀態欄樣式 默認為:“1” - 白色狀態欄，“2” - 錢包主題藍
 ```
 build里面参数为支付结果回调函数，支付成功res返回{'ret_code':'complete','ret_msg':'successful'}JOSN字符串，支付失败res返回{'ret_code':'fail','ret_msg':'cancel'}JOSN字符串。
 
-req为支付信息参数对象，结果为appId（分配给商户的）、timeStamp（时间戳）、nonceStr（由服务器生产的随机串，用于验证前后端交互的一致性）、prepayid（预支付订单的传递订单号）、signType（签名散列算法，现在固定为'MD5'）、paySign（验签参数）
 
- 
+ `req`为支付信息参数对象時，结果为appId（分配给商户的）、timeStamp（时间戳）、nonceStr（由服务器生产的随机串，用于验证前后端交互的一致性）、prepayid（预支付订单的传递订单号）、signType（签名散列算法，现在固定为'MD5'）、paySign（验签参数）
+
+`req`为微信分享參數對象時，结果为isFriend（false:为聊天列表，true:为朋友圈）、type（1:为普通链接方式，image为链接的头像，2:为大图分享方式，image为大图的链接）、content（內容描述）、title(標題)、image（分享鏈接縮略圖）、platform（"wechat" 分享平台（目前只支持微信））
+
+`req`为打開地圖時，结果为 latitude((必填)纬度，浮点数，范围为90 ~ -90)、longitude((必填)经度，浮点数，范围为180 ~ -180)、name（(必填)位置名称）、address（(可选)地址详细说明）
