@@ -54,12 +54,9 @@ paySdk.payment(req);
 paySdk.getCurrentLocation(req);   獲取當前地址， req默認為{type: 'wgs84'}
 paySdk.sendShareReq(req);         用於喚醒原生APP的分享功能，目前包括：微信對話和微信朋友圈 
 paySdk.closeWindow(req);          關閉內置瀏覽器窗口
-paySdk.openAction(req);           打開APP的綁卡頁面
 paySdk.openLocation(req);         打開地圖
 paySdk.scanCode(req);             (必填)默认为0，扫描结果由UePay处理，当needResult 为 1 时，扫码返回的结果
-paySdk.hideTitleBar(req);         隱藏UePay內置瀏覽器標題欄
-paySdk.showTitleBar(req);         顯示標題欄
-paySdk.setStatusBar(req);         設置UePay內置瀏覽器頁面 狀態欄樣式 默認為:“1” - 白色狀態欄，“2” - 錢包主題藍
+
 ```
 build里面参数为支付结果回调函数，支付成功res返回{'ret_code':'complete','ret_msg':'successful'}JOSN字符串，支付失败res返回{'ret_code':'fail','ret_msg':'cancel'}JOSN字符串。
 
