@@ -4,50 +4,93 @@
 
 <head>
     <meta charset="utf-8">
-    <title>UEPAY支付</title> 
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>UEPAY支付</title>
+    <style>
+        #button{
+            width: 100%;
+            height: 45px;
+            margin: 20px 0px;
+            font-size:18px;
+            color: #FFF;
+            background-color: #00B8B8;
+            outline:none;
+            border: none;
+            border-radius: 12px;
+        }
+        p{
+            text-align:center;
+            font-size:20px;
+            font-weight: bold;
+            color: rgb(71, 71, 71);
+        }
+    </style>
 </head>
 
 <body>
-    <script type="text/javascript" src="./uepay_jssdk.js"></script> <!-- 引入uepay wallet sdk -->
+    <script type="text/javascript" src="./uepay-1.2.0.js"></script> <!-- 引入uepay wallet sdk -->
     <script type="text/javascript">
 
-        function onBridgeReady() {
-            const isUePay = window.UePayJsApi.isUePayApp();    // 判斷是否為uepay內核，true：表示是；false：表示否
-
+        // 打開掃一掃
+        function onScanCode() {
+            const isUePay = UePayJsApi.isUePayApp();    // 判斷是否為uepay內核，true：表示是；false：表示否
+            const needResult = "1";
             if (isUePay) {
-                var paySdk = window.UePayJsApi.build(function (res) {      // 支付初始化
-                    // 支付成功回調函數
-                    var obj = JSON.parse(res);
-                    if (obj.ret_code === '00') {      // '00' 表示成功
-                        alert('成功');
+                UePayJsApi.scanCode({
+                    needResult: needResult,  //(必填)默认为0，扫描结果由UePay处理，1 则直接返回扫描结
+                    callback: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.ret_code === '00') {
+                            // 打開掃碼成功 
+                            if( needResult === "1"){ // 当needResult 为 1 时，扫码返回的结果
+                                alert("result:"+obj.result);
+                            }
+                        }
+                        if (obj.ret_code === '01') {
+                            // 打開掃碼失敗
+                            alert(obj.ret_msg);
+                        }
                     }
-                    if (obj.ret_code === '01') {      // '01' 表示失敗
-                        alert('失败');
-                    }
-                    if (obj.ret_code === '02') {     // '02' 表示放棄支付
-                        alert('放弃支付');
-                    }
-                });
-                var param = {      // 唤醒支付参数，jssdk唤起参数说明请参考极易付接口文档
-                    "appId": "000030053310001",
-                    "timeStamp": 1581992793,
-                    "nonceStr": "43229cfd7e9c2b2f16a6f942da4b1e16",
-                    "prepayid": "UEPAY2020021810500882940194",
-                    "signType": "MD5",
-                    "paySign": "EC1DEEB32CAEE9AC3AAB9789E249D9EA"
-                };
-                paySdk.payment(param);      // 支付
+                })
             } else {
                 alert("抱歉，请使用UePay打开");
-
             }
-
         }
-        onBridgeReady();
+
+        // 打開位置導航
+        function onOpenLocation() {
+            const isUePay = UePayJsApi.isUePayApp();    // 判斷是否為uepay內核，true：表示是；false：表示否
+            if (isUePay) {
+                UePayJsApi.openLocation({
+                    latitude: "23.129112",     // (必填)纬度，浮点数，范围为90 ~ -90
+                    longitude: "113.3715",     // (必填)经度，浮点数，范围为180 ~ -180。
+                    name: "天河公园(南门)",      // (必填)位置名称
+                    address: "广东省广州市天河区黄埔大道中",     // (可选)地址详细说明
+                    callback: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.ret_code === '00') {
+                            alert("打開成功");
+                        }
+                        if (obj.ret_code === '01') {
+                            alert(obj.ret_msg);
+                        }
+                    }
+                })
+            } else {
+                alert("抱歉，请使用UePay打开");
+            }
+        }
+
 
     </script>
 
-    <div>测试</div>
+    <div>
+        <p>UePay-JSSDK 演示Demo</p>
+        <button id="button" onClick="onScanCode()">掃一掃</button></br>
+        <button id="button" onClick="onOpenLocation()">打開位置導航</button>
+
+    </div>
 </body>
 
 </html>

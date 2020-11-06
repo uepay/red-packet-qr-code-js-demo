@@ -22,6 +22,8 @@ uepay_jssdk.js    --- uepay钱包支付SDK
 README.md    --- 说明文档
 ```
 
+## 注意：必須在UePay錢包內置瀏覽器（WebView）中使用。
+
 ## uepay钱包接口
 下载相应的文件，将uepay_jssdk.js文件放在项目下，便于引用 ```<script type="text/javascript" src="./uepay_jssdk.js"></script>```
 
@@ -47,22 +49,65 @@ const isUePay = UePay.onReady();
  */
  ```
  
- 4、实例化UePayJsApi并发起支付
- ```
-var paySdk = UePay.build(function(res) {});
-paySdk.payment(req);
-paySdk.getCurrentLocation(req);   獲取當前地址， req默認為{type: 'wgs84'}
-paySdk.sendShareReq(req);         用於喚醒原生APP的分享功能，目前包括：微信對話和微信朋友圈 
-paySdk.closeWindow(req);          關閉內置瀏覽器窗口
-paySdk.openLocation(req);         打開地圖
-paySdk.scanCode(req);             (必填)默认为0，扫描结果由UePay处理，当needResult 为 1 时，扫码返回的结果
+ 4、喚醒APP支付功能。
 
-```
-build里面参数为支付结果回调函数，支付成功res返回{'ret_code':'complete','ret_msg':'successful'}JOSN字符串，支付失败res返回{'ret_code':'fail','ret_msg':'cancel'}JOSN字符串。
+        UePayJsApi.payment({
+            "appId": "", 分配给商户的
+            "timeStamp": '',时间戳
+            "nonceStr": "", 由服务器生产的随机串,用于验证前后端交互的一致性
+            "prepayid": "", 预支付订单的传递订单号
+            "signType": "",签名散列算法，现在固定为'MD5'
+            "paySign": "",验签参数
+            callback: function (res) {
+               支付结果回调函数，支付成功res返回{'ret_code':'complete','ret_msg':'callbackful'}JOSN字符串，支付失败res返回{'ret_code':'fail','ret_msg':'cancel'}JOSN字符串。
+            }
 
 
- `req`为支付信息参数对象時，结果为appId（分配给商户的）、timeStamp（时间戳）、nonceStr（由服务器生产的随机串，用于验证前后端交互的一致性）、prepayid（预支付订单的传递订单号）、signType（签名散列算法，现在固定为'MD5'）、paySign（验签参数）
 
-`req`为微信分享參數對象時，结果为isFriend（false:为聊天列表，true:为朋友圈）、type（1:为普通链接方式，image为链接的头像，2:为大图分享方式，image为大图的链接）、content（內容描述）、title(標題)、image（分享鏈接縮略圖）、platform（"wechat" 分享平台（目前只支持微信））
+ 5、用於關閉當前瀏覽器（WebView）窗口
 
-`req`为打開地圖時，结果为 latitude((必填)纬度，浮点数，范围为90 ~ -90)、longitude((必填)经度，浮点数，范围为180 ~ -180)、name（(必填)位置名称）、address（(可选)地址详细说明）
+        UePayJsApi.closeWindow({
+            callback: function (res) {
+               // 成功
+            }
+
+        })
+
+
+6、獲取用戶當前的位置信息
+
+         UePayJsApi.getLocation({
+            "type": "", // 默认为wgs84的gps坐标
+            callback: function (res) {
+              {'latitude':'表示纬度，浮点数，范围为90 ~ -90','longitude':'表示经度，浮点数，范围为180 ~ -180'，'speed','表示速度，以米/每秒计','accuracy':'表示位置精度'}JOSN字符串
+             
+            }
+
+        })
+
+7.打開第三方地圖軟件，進行導航路徑規劃。目前包含：高德地圖、百度地圖、騰訊地圖。
+
+        UePayJsApi.openLocation({
+            "latitude": "",     // (必填)纬度，浮点数，范围为90 ~ -90
+            "longitude": "",     // (必填)经度，浮点数，范围为180 ~ -180。
+            "name": "",      // (必填)位置名称
+            "address": "" ,  // (可选)地址详细说明
+            callback: function (res) {
+             //成功
+             
+            }
+
+        })
+
+
+8.UePay錢包APP的掃一掃功能
+
+        UePayJsApi.scanCode({
+            "needResult": 0 必填)默认为0，扫描结果由UePay处理，1 则直接返回扫描结
+            callback: function (res) {
+             //成功
+             
+            }
+
+        })
+

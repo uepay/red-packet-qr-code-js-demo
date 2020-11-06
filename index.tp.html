@@ -3,7 +3,8 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>UEPAY支付</title>
     <style type="text/css">
         .moneyWrap {
@@ -123,22 +124,8 @@
 
         var but = document.getElementById('payment');
         but.onclick = function (evt) {
-            const isUePay = window.UePayJsApi.isUePayApp();    // 判斷是否為uepay內核，true：表示是；false：表示否
-
+            const isUePay = UePayJsApi.isUePayApp();    // 判斷是否為uepay內核，true：表示是；false：表示否
             if (isUePay) {
-                var paySdk = window.UePayJsApi.build(function (res) {      // 支付初始化
-                    // 支付成功回調函數
-                    var obj = JSON.parse(res);
-                    if (obj.ret_code === '00') {      // '00' 表示成功
-                        alert('成功');
-                    }
-                    if (obj.ret_code === '01') {      // '01' 表示失敗
-                        alert('失败');
-                    }
-                    if (obj.ret_code === '02') {     // '02' 表示放棄支付
-                        alert('放弃支付');
-                    }
-                });
                 // 获取唤醒支付参数，jssdk唤起参数说明请参考极易付接口文档
                 let params = {
                     "type": "JSAPI",
@@ -148,7 +135,7 @@
                 }
                 ajax({
                     method: 'POST',
-                    url: 'https://XXXX',     // 获取 唤起参数接口
+                    url: 'https://XXXX',     // 去服務器获取 唤起UePay支付需要的参数 接口
                     data: params,
                     success: function (data) {
                         var req = {
@@ -157,9 +144,21 @@
                             nonceStr: data['nonceStr'],
                             prepayid: data['prepayid'],
                             signType: data['signType'],
-                            paySign: data['paySign']
+                            paySign: data['paySign'],
+                            callback: function (res) {      // 支付成功回調函數
+                                var obj = JSON.parse(res);
+                                if (obj.ret_code === '00') {      // '00' 表示成功
+                                    alert('成功');
+                                }
+                                if (obj.ret_code === '01') {      // '01' 表示失敗
+                                    alert('失败');
+                                }
+                                if (obj.ret_code === '02') {     // '02' 表示放棄支付
+                                    alert('放弃支付');
+                                }
+                            }
                         }
-                        paySdk.payment(req); // 支付
+                        UePayJsApi.payment(req); // 支付
                     }
                 })
             } else {
