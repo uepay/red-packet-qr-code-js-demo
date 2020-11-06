@@ -18,14 +18,14 @@
 ```
 index.html     --- sdk调用例子（判断是否为uepay内核后直接唤醒支付）
 index.tp.html    --- sdk调用例子（输入金额点击支付，判断是否为uepay内核后直接唤醒支付）
-uepay_jssdk.js    --- uepay钱包支付SDK
+uepay-1.2.0.js    --- uepay钱包支付SDK
 README.md    --- 说明文档
 ```
 
 ## 注意：必須在UePay錢包內置瀏覽器（WebView）中使用。
 
 ## uepay钱包接口
-下载相应的文件，将uepay_jssdk.js文件放在项目下，便于引用 ```<script type="text/javascript" src="./uepay_jssdk.js"></script>```
+下载相应的文件，将uepay-1.2.0.js文件放在项目下，便于引用 ```<script type="text/javascript" src="./uepay_jssdk.js"></script>```
 
 1、获取版本号
 ```
@@ -39,14 +39,6 @@ var clientSide = agent.UePayClient;    // 客戶端版本
 const isUePay = UePay.isUePayApp();    // true为UePay钱包内核，false为非UePay钱包内核
 ```
 
-3、异步方法用于注册被监听的全局文件准备就绪事件
-```
-const isUePay = UePay.onReady();
-/**
- * (uePay) => {
- *     uePay && uePay.payment();
- * }
- */
  ```
  
  4、喚醒APP支付功能。
