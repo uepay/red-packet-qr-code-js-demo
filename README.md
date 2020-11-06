@@ -109,5 +109,5 @@ const isUePay = UePay.onReady();
              
             }
 
-        })
+        }) 
 
