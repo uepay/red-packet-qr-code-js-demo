@@ -29,14 +29,14 @@ README.md    --- 说明文档
 
 1、获取版本号
 ```
-const agent = UePay.getUserAgent();    // 获取当前浏览代理头
+const agent = UePayJsApi.getUserAgent();    // 获取当前浏览代理头
 var serverSide = agent.UePay;      // 服務端版本
 var clientSide = agent.UePayClient;    // 客戶端版本
 ```
 
 2、判断当前是否为钱包内核
 ```
-const isUePay = UePay.isUePayApp();    // true为UePay钱包内核，false为非UePay钱包内核
+const isUePay = UePayJsApi.isUePayApp();    // true为UePay钱包内核，false为非UePay钱包内核
 ```
 
  ```
