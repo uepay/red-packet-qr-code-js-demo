@@ -51,7 +51,8 @@ const isUePay = UePayJsApi.isUePayApp();    // true为UePay钱包内核，false�
             "signType": "",签名散列算法，现在固定为'MD5'
             "paySign": "",验签参数
             callback: function (res) {
-               支付结果回调函数，支付成功res返回{'ret_code':'complete','ret_msg':'callbackful'}JOSN字符串，支付失败res返回{'ret_code':'fail','ret_msg':'cancel'}JOSN字符串。
+               支付结果回调函数，支付成功res返回{'ret_code':'00','ret_msg':'success'}JOSN字符串，支付失败res返回{'ret_code':'01','ret_msg':'failed'},
+               取消支付res返回{'ret_code':'02','ret_msg':'cancel'}JOSN字符串。
             }
 
 
