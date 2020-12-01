@@ -63,7 +63,7 @@ const isUePay = UePayJsApi.isUePayApp();    // true为UePay钱包内核，false�
             callback: function (res) {
                // 成功
             }
-
+ 
         })
 
 
